@@ -10,13 +10,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
+      
+      - name: Checkout public repo
+        uses: actions/checkout@v3
+        with:
+          repository: kamilkisiela/bar
+          path: bar
+          ref: ${{ github.event.client_payload.commit }}
+          
+      - name: Move
+        run: cp deployment/* /bar/deployment
+      
       - name: Echo
-        env:
-          TARGET: ${{ github.event.client_payload.target }}
-          BRANCH: ${{ github.event.client_payload.branch }}
-          COMMIT: ${{ github.event.client_payload.commit }}
-        run: |
-          echo $TARGET
-          echo $BRANCH
-          echo $COMMIT
+        working-directory: bar
+        run: l
+          
+          
+          
