@@ -14,7 +14,7 @@ jobs:
       INPUT_ENVIRONMENT: ${{ github.event.client_payload.environment }}
       INPUT_REF: ${{ github.event.client_payload.ref }}
       
-    if: env.INPUT_ENVIRONMENT == 'production' || env.INPUT_ENVIRONMENT == 'staging'
+    if: ${{ env.INPUT_ENVIRONMENT == 'production' || env.INPUT_ENVIRONMENT == 'staging' }}
 
     steps:
       - name: Checkout
