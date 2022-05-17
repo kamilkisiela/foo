@@ -19,7 +19,7 @@ jobs:
           ref: ${{ github.event.client_payload.commit }}
           
       - name: Move
-        run: cp deployment/* /bar/deployment
+        run: cp ./deployment/* ./bar/deployment
       
       - name: Echo
         working-directory: bar
