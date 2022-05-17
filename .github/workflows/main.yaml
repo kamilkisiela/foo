@@ -1,17 +1,22 @@
 name: Foo
-on: [push]
+on:
+  repository_dispatch:
+    types: [deploy]
 
 jobs:
-  check:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 16
-
       - name: Echo
-        run: echo "Foo"
+        env:
+          TARGET: ${{ github.event.client_payload.target }}
+          BRANCH: ${{ github.event.client_payload.branch }}
+          COMMIT: ${{ github.event.client_payload.commit }}
+        run: |
+          echo $TARGET
+          echo $BRANCH
+          echo $COMMIT
