@@ -5,12 +5,16 @@ on:
 
 jobs:
   deploy:
-    if: github.event.client_payload.environment == 'production' || github.event.client_payload.environment == 'staging'
-  
     runs-on: ubuntu-latest
     
     name: 'Deploy to ${{ github.event.client_payload.environment }}'
     environment: '${{github.event.client_payload.environment}}'
+    
+    env:
+      INPUT_ENVIRONMENT: ${{ github.event.client_payload.environment }}
+      INPUT_REF: ${{ github.event.client_payload.ref }}
+      
+    if: env.INPUT_ENVIRONMENT == 'production' || env.INPUT_ENVIRONMENT == 'staging'
 
     steps:
       - name: Checkout
