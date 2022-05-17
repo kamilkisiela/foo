@@ -23,7 +23,7 @@ jobs:
       
       - name: Echo
         working-directory: bar
-        run: l
+        run: ls
           
           
           
