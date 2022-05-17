@@ -5,11 +5,12 @@ on:
 
 jobs:
   deploy:
+    if: github.event.client_payload.environment == 'production' || github.event.client_payload.environment == 'staging'
+  
     runs-on: ubuntu-latest
     
     name: 'Deploy to ${{ github.event.client_payload.environment }}'
     environment: '${{github.event.client_payload.environment}}'
-
 
     steps:
       - name: Checkout
@@ -26,12 +27,25 @@ jobs:
           
       - name: Move
         run: cp ./private/deployment/* ./public/deployment
+        
+      - name: Set variables for staging environment
+        if: github.event.client_payload.environment == 'staging'
+        run: |
+          echo "stack_name=theguild/hive/staging" >> $GITHUB_ENV
+
+      - name: Set variables for production environment
+        if: github.event.client_payload.environment == 'production'
+        run: |
+          echo "stack_name=theguild/hive/prod" >> $GITHUB_ENV
       
       - name: Echo
         working-directory: public/deployment
+        env:
+          STACK_NAME: ${{ env.stack_name }}
         run: |
           ls
           git rev-parse HEAD
+          echo $STACK_NAME
           
           
           
